@@ -25,12 +25,15 @@ This will render the profile in semantic hContact mircroformat markup.
 
 You can use all functionality from the addressable module like:  
 **automatic geocoding**  
+
     Object::add_extension('Object', 'Geocodable');
 
 **define a global set of allowed states or countries**  
+
     Profileable::set_allowed_countries(array('DE'=>'Deutschland'));
 
 **render a GoogleMap**  
+
     $ProfileMap(300,200)
 
 
