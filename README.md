@@ -29,3 +29,9 @@ define a global set of allowed states or countries
 *  Profileable::set_allowed_countries(array('DE'=>'Deutschland'));
 render a GoogleMap
 *  $ProfileMap(300,200)
+
+
+--------------------------------------------------------------------
+Released under 
+MIT License
+(i.e., do whatever you want with this and use at your own risk)
