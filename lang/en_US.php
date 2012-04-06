@@ -3,8 +3,6 @@
 // US translation for the Profileable Decorator
 // -------------------------------------------------------------------
 
-i18n::include_locale_file('Profileable', 'en_US');
-
 global $lang;
 
 $lang['de_DE']['Profileable']['NAME'] = 'name';
