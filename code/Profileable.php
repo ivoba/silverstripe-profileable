@@ -40,9 +40,9 @@ class Profileable extends Addressable {
 
     public function updateCMSFields($fields) {
         if ($fields->fieldByName('Root.Content')) {
-            $tab = 'Root.Content.Profile';
+            $tab = 'Root.Content.'. _t('Profileable.PROFILE', 'Profile');
         } else {
-            $tab = 'Root.Profile';
+            $tab = 'Root.'. _t('Profileable.PROFILE', 'Profile');
         }
 
         $fields->addFieldsToTab($tab, $this->getProfileFields());
