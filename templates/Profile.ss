@@ -10,7 +10,12 @@
     <div class="org organization-name">$Name</div>
     <a class="email" href="mailto:$Email">$Email</a>
     <div class="adr">
-        <div class="street-address">$Address</div>
+        <div class="street-address">
+		$Address
+		<% if AddressAddition %>
+        		$AddressAddition<br />
+      		<% end_if %>
+	</div>
         <div><span class="postal-code">$PostCode</span>
             <span class="locality">$City</span></div>
         <span class="region">$State</span>

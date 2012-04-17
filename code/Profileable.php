@@ -22,6 +22,7 @@ class Profileable extends Addressable {
         return array('db' => array(
                 'Name' => 'Varchar(255)',
                 'Address' => 'Varchar(255)',
+                'AddressAddition' => 'Varchar(255)',
                 'Suburb' => 'varchar(64)',
                 'State' => 'Varchar(64)',
                 'Postcode' => 'Varchar(10)',
@@ -52,6 +53,7 @@ class Profileable extends Addressable {
             new HeaderField('ProfileHeader', _t('Profileable.PROFILE', 'Profile')),
             new TextField('Name', _t('Profileable.NAME', 'Name')),
             new TextField('Address', _t('Addressable.ADDRESS', 'Address')),
+            new TextField('AddressAddition', _t('Profilable.ADDRESSADDITION', 'Address Addition')),
             new TextField('Suburb', _t('Addressable.SUBURB', 'Suburb'))
             );
 

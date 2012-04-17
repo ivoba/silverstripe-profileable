@@ -7,6 +7,7 @@ global $lang;
 
 $lang['en_US']['Profileable']['NAME'] = 'name';
 $lang['en_US']['Profileable']['PROFILE'] = 'profile';
+$lang['en_US']['Profileable']['ADDRESSADDITION'] = 'address addition';
 $lang['en_US']['Profileable']['CITY'] = 'city';
 $lang['en_US']['Profileable']['PHONE'] = 'phone';
 $lang['en_US']['Profileable']['FAX'] = 'fax';
