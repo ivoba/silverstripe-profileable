@@ -122,7 +122,7 @@ class Profileable extends Addressable {
         $data = $this->owner->customise(array(
             'Width' => $width,
             'Height' => $height,
-            'Address' => $this->getFullProfile()
+            'Address' => rawurlencode($this->getFullProfile())
                 ));
         return $data->renderWith('AddressMap');
     }
