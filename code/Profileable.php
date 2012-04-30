@@ -101,18 +101,13 @@ class Profileable extends Addressable {
     }
     
     public function getFullProfile() {
-		return sprintf('%s, %s, %s %d %s, %s, %s, %s',
-			$this->owner->Address,
-			$this->owner->Suburb,
-			$this->owner->State,
-			$this->owner->Postcode,
-			$this->owner->City,
-			$this->getCountryName(),
-                        $this->owner->Phone,
-                        $this->owner->Email,
-			$this->owner->Www
-			);
-	}
+        return sprintf('%s, %s, %s %d %s, %s, %s, %s', $this->owner->Address, $this->owner->Suburb, $this->owner->State, $this->owner->Postcode, $this->owner->City, $this->getCountryName(), $this->owner->Phone, $this->owner->Email, $this->owner->Www
+        );
+    }
+
+    public function getFullAddress() {
+        return sprintf('%s, %s %d, %s', $this->owner->Address, $this->owner->Postcode, $this->owner->City, $this->getCountryName());
+    }
 
     public function getFullProfileHTML() {
         return $this->owner->renderWith('Profile');
@@ -122,7 +117,7 @@ class Profileable extends Addressable {
         $data = $this->owner->customise(array(
             'Width' => $width,
             'Height' => $height,
-            'Address' => rawurlencode($this->getFullProfile())
+            'Address' => rawurlencode($this->getFullAddress())
                 ));
         return $data->renderWith('AddressMap');
     }
