@@ -3,57 +3,70 @@
 /**
  * Adds a profile to an object, as well as fields to manage them.
  * Depends on and extends silverstripe-addressable
- * Depends uploadify
  *
  * This extensions also integrates with the {@link Geocoding} extension to
  * save co-ordinates on object write.
  *
- * @todo disable inherited functions that do not make sense no more
  * @package silverstripe-profileable
  * @package silverstripe-addressable
  */
-class Profileable extends Addressable {
-    
-    public function __construct() {
-		parent::__construct();
-	}
 
-    public function extraStatics() {
-        return array('db' => array(
-                'Name' => 'Varchar(255)',
-                'Address' => 'Varchar(255)',
-                'AddressAddition' => 'Varchar(255)',
-                'Suburb' => 'varchar(64)',
-                'State' => 'Varchar(64)',
-                'Postcode' => 'Varchar(10)',
-                'City' => 'varchar(64)',
-                'Phone' => 'varchar(64)',
-                'Fax' => 'varchar(64)',
-                'Email' => 'varchar(64)',
-                'Www' => 'varchar(64)',
-                'Country' => 'Varchar(2)'
-                ),
-            'has_one' => array(
-		"ProfilePicture" => "Image"
-            ));
+
+class Profileable extends Addressable {
+
+    public function __construct() {
+        parent::__construct();
     }
 
-    public function updateCMSFields($fields) {
+    public static $db = array(
+        'ProfileName' => 'Varchar(255)',
+        'Gender' => "Enum('m,f,u')",
+        'Company' => 'Varchar(255)',
+        'Address' => 'Varchar(255)',//Street
+        'AddressAddition' => 'Varchar(255)',
+        'Suburb' => 'Varchar(64)',
+        'State' => 'Varchar(255)',
+        'Postcode' => 'Varchar(10)',
+        'City' => 'Varchar(255)',
+        'Phone' => 'Varchar(64)',
+        'Fax' => 'Varchar(64)',
+        //so we dont colide with member, if you want to decorate member
+        'ProfileEmail' => 'Varchar(255)',
+        'Www' => 'Varchar(255)',
+        'Country' => 'Varchar(2)',
+        'Description' => 'Text'
+    );
+    
+    static $has_one = array(
+        'ProfilePicture' => 'Image'
+    );
+
+    public function updateCMSFields(FieldList $fields) {
         if ($fields->fieldByName('Root.Content')) {
-            $tab = 'Root.Content.'. _t('Profileable.PROFILE', 'Profile');
+            $tab = 'Root.Content.'. _t('Profileable.PROFILE ', 'Profile');
         } else {
-            $tab = 'Root.'. _t('Profileable.PROFILE', 'Profile');
+            $tab = 'Root.'. _t('Profileable.PROFILE ', 'Profile');
         }
 
         $fields->addFieldsToTab($tab, $this->getProfileFields());
     }
 
     protected function getProfileFields() {
+        
+        //TODO gender enum
+        
+        $postcode = new RegexTextField('Postcode', _t('Addressable.POSTCODE', 'Postcode'));
+        $postcode->setRegex($this->postcodeRegex);
+        
         $fields = array(
             new HeaderField('ProfileHeader', _t('Profileable.PROFILE', 'Profile')),
-            new TextField('Name', _t('Profileable.NAME', 'Name')),
+            new OptionsetField('Gender', _t('Profileable.GENDER', 'Gender'), array('m' => _t('Profileable.MASCULINE', 'masculine'), 'f' => _t('Profileable.FEMININE', 'feminine'), 'u' => _t('Profileable.UNKNOWN', 'unknown')),'u'),
+            new TextField('ProfileName', _t('Profileable.NAME', 'Name')),
+            new TextField('Company', _t('Profileable.COMPANY', 'Company')),
             new TextField('Address', _t('Addressable.ADDRESS', 'Address')),
             new TextField('AddressAddition', _t('Profilable.ADDRESSADDITION', 'Address Addition')),
+            $postcode,
+            new TextField('City', _t('Profileable.CITY', 'City')),
             new TextField('Suburb', _t('Addressable.SUBURB', 'Suburb'))
             );
 
@@ -63,11 +76,6 @@ class Profileable extends Addressable {
         } elseif (!is_string($this->allowedStates)) {
             $fields[] = new TextField('State', $label);
         }
-        $fields[] = new TextField('City', _t('Profileable.CITY', 'City'));
-
-        $postcode = new RegexTextField('Postcode', _t('Addressable.POSTCODE', 'Postcode'));
-        $postcode->setRegex($this->postcodeRegex);
-        $fields[] = $postcode;
 
         $label = _t('Addressable.COUNTRY', 'Country');
         if (is_array($this->allowedCountries)) {
@@ -78,10 +86,11 @@ class Profileable extends Addressable {
         
         $fields[] = new TextField('Phone', _t('Profileable.PHONE', 'Phone'));
         $fields[] = new TextField('Fax', _t('Profileable.FAX', 'Fax'));
-        $fields[] = new EmailField('Email', _t('Profileable.EMAIL', 'E-Mail'));
+        $fields[] = new EmailField('ProfileEmail', _t('Profileable.EMAIL', 'E-Mail'));
         $fields[] = new TextField('Www', _t('Profileable.WWW', 'Homepage'));
-        $fields[] = new ImageField ('ProfilePicture', _t('Profileable.PROFILEPICTURE', 'Profile Picture'));
-
+        $fields[] = new UploadField('ProfilePicture', _t('Profileable.PROFILEPICTURE', 'Profile Picture'));
+        $fields[] = new TextareaField('Description', _t('Profileable.Description', 'Description'));
+        
         return $fields;
     }
 
@@ -119,7 +128,9 @@ class Profileable extends Addressable {
             'Height' => $height,
             'Address' => rawurlencode($this->getFullAddress())
                 ));
-        return $data->renderWith('AddressMap');
+        return $data->renderWith('AddressMap     
+
+     ');
     }
 
 }
