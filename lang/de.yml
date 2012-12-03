@@ -1,0 +1,15 @@
+de:
+  Profileable:
+    NAME: 'Profil-Name'
+    GENDER: 'Geschlecht'
+    MASCULINE: 'männlich'
+    FEMININE: 'weiblich'
+    UNKNOWN: 'unbekannt'
+    PROFILE: 'Profil'
+    ADDRESSADDITION: 'Adresszusatz'
+    CITY: 'Stadt'
+    PHONE: 'Tel.'
+    FAX: 'Fax'
+    EMAIL: 'E-Mail'
+    WWW: 'Internet'
+    PROFILEPICTURE: 'Profil Bild'
