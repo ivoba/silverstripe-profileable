@@ -22,6 +22,7 @@ class Profileable extends Addressable {
         'ProfileName' => 'Varchar(255)',
         'Gender' => "Enum('m,f,u')",
         'Company' => 'Varchar(255)',
+        'Position' => 'Varchar(255)',
         'Address' => 'Varchar(255)',//Street
         'AddressAddition' => 'Varchar(255)',
         'Suburb' => 'Varchar(64)',
@@ -63,8 +64,9 @@ class Profileable extends Addressable {
             new OptionsetField('Gender', _t('Profileable.GENDER', 'Gender'), array('m' => _t('Profileable.MASCULINE', 'masculine'), 'f' => _t('Profileable.FEMININE', 'feminine'), 'u' => _t('Profileable.UNKNOWN', 'unknown')),'u'),
             new TextField('ProfileName', _t('Profileable.NAME', 'Name')),
             new TextField('Company', _t('Profileable.COMPANY', 'Company')),
+            new TextField('Position', _t('Profileable.POSITION', 'Position')),
             new TextField('Address', _t('Addressable.ADDRESS', 'Address')),
-            new TextField('AddressAddition', _t('Profilable.ADDRESSADDITION', 'Address Addition')),
+            new TextField('AddressAddition', _t('Profileable.ADDRESSADDITION', 'Address Addition')),
             $postcode,
             new TextField('City', _t('Profileable.CITY', 'City')),
             new TextField('Suburb', _t('Addressable.SUBURB', 'Suburb'))
@@ -89,7 +91,7 @@ class Profileable extends Addressable {
         $fields[] = new EmailField('ProfileEmail', _t('Profileable.EMAIL', 'E-Mail'));
         $fields[] = new TextField('Www', _t('Profileable.WWW', 'Homepage'));
         $fields[] = new UploadField('ProfilePicture', _t('Profileable.PROFILEPICTURE', 'Profile Picture'));
-        $fields[] = new TextareaField('Description', _t('Profileable.Description', 'Description'));
+        $fields[] = new TextareaField('Description', _t('Profileable.DESCRIPTION', 'Description'));
         
         return $fields;
     }
