@@ -10,8 +10,6 @@
  * @package silverstripe-profileable
  * @package silverstripe-addressable
  */
-
-
 class Profileable extends Addressable {
 
     public function __construct() {
@@ -21,9 +19,10 @@ class Profileable extends Addressable {
     public static $db = array(
         'ProfileName' => 'Varchar(255)',
         'Gender' => "Enum('m,f,u')",
+        'AcademicTitle' => 'Varchar(20)',
         'Company' => 'Varchar(255)',
         'Position' => 'Varchar(255)',
-        'Address' => 'Varchar(255)',//Street
+        'Address' => 'Varchar(255)', //Street
         'AddressAddition' => 'Varchar(255)',
         'Suburb' => 'Varchar(64)',
         'State' => 'Varchar(255)',
@@ -37,31 +36,31 @@ class Profileable extends Addressable {
         'Country' => 'Varchar(2)',
         'Description' => 'Text'
     );
-    
     static $has_one = array(
         'ProfilePicture' => 'Image'
     );
 
     public function updateCMSFields(FieldList $fields) {
         if ($fields->fieldByName('Root.Content')) {
-            $tab = 'Root.Content.'. _t('Profileable.PROFILE ', 'Profile');
+            $tab = 'Root.Content.' . _t('Profileable.PROFILE ', 'Profile');
         } else {
-            $tab = 'Root.'. _t('Profileable.PROFILE ', 'Profile');
+            $tab = 'Root.' . _t('Profileable.PROFILE ', 'Profile');
         }
 
         $fields->addFieldsToTab($tab, $this->getProfileFields());
     }
 
     protected function getProfileFields() {
-        
+
         //TODO gender enum
-        
+
         $postcode = new RegexTextField('Postcode', _t('Addressable.POSTCODE', 'Postcode'));
         $postcode->setRegex($this->postcodeRegex);
-        
+
         $fields = array(
             new HeaderField('ProfileHeader', _t('Profileable.PROFILE', 'Profile')),
-            new OptionsetField('Gender', _t('Profileable.GENDER', 'Gender'), array('m' => _t('Profileable.MASCULINE', 'masculine'), 'f' => _t('Profileable.FEMININE', 'feminine'), 'u' => _t('Profileable.UNKNOWN', 'unknown')),'u'),
+            new OptionsetField('Gender', _t('Profileable.GENDER', 'Gender'), array('m' => _t('Profileable.MASCULINE', 'masculine'), 'f' => _t('Profileable.FEMININE', 'feminine'), 'u' => _t('Profileable.UNKNOWN', 'unknown')), 'u'),
+            new TextField('AcademicTitle', _t('Profileable.ACADEMICTITLE', 'Name')),
             new TextField('ProfileName', _t('Profileable.NAME', 'Name')),
             new TextField('Company', _t('Profileable.COMPANY', 'Company')),
             new TextField('Position', _t('Profileable.POSITION', 'Position')),
@@ -70,7 +69,7 @@ class Profileable extends Addressable {
             $postcode,
             new TextField('City', _t('Profileable.CITY', 'City')),
             new TextField('Suburb', _t('Addressable.SUBURB', 'Suburb'))
-            );
+        );
 
         $label = _t('Addressable.STATE', 'State');
         if (is_array($this->allowedStates)) {
@@ -85,14 +84,14 @@ class Profileable extends Addressable {
         } elseif (!is_string($this->allowedCountries)) {
             $fields[] = new CountryDropdownField('Country', $label);
         }
-        
+
         $fields[] = new TextField('Phone', _t('Profileable.PHONE', 'Phone'));
         $fields[] = new TextField('Fax', _t('Profileable.FAX', 'Fax'));
         $fields[] = new EmailField('ProfileEmail', _t('Profileable.EMAIL', 'E-Mail'));
         $fields[] = new TextField('Www', _t('Profileable.WWW', 'Homepage'));
         $fields[] = new UploadField('ProfilePicture', _t('Profileable.PROFILEPICTURE', 'Profile Picture'));
         $fields[] = new TextareaField('Description', _t('Profileable.DESCRIPTION', 'Description'));
-        
+
         return $fields;
     }
 
@@ -110,7 +109,33 @@ class Profileable extends Addressable {
                 && $this->owner->Www
                 );
     }
-    
+
+    public function getFullName() {
+        $n = array();
+        switch ($this->owner->Gender) {
+            case 'm':
+                $n[] = _t('Profileable.MR', 'Mr');
+                break;
+            case 'f':
+                $n[] = _t('Profileable.MS', 'Ms');
+                break;
+            default:
+                break;
+        }
+        if (!empty($this->owner->AcademicTitle)) {
+            $n[] = $this->owner->AcademicTitle;
+        }
+        //extends Member?
+        if(isset($this->owner->FirstName) && isset($this->owner->Surname)) {
+            $n[] = $this->owner->FirstName;
+            $n[] = $this->owner->Surname;
+        } else {
+            $n[] = $this->owner->ProfileName;
+        }
+        var_dump($n);
+        return join(' ', $n);
+    }
+
     public function getFullProfile() {
         return sprintf('%s, %s, %s %d %s, %s, %s, %s', $this->owner->Address, $this->owner->Suburb, $this->owner->State, $this->owner->Postcode, $this->owner->City, $this->getCountryName(), $this->owner->Phone, $this->owner->Email, $this->owner->Www
         );
