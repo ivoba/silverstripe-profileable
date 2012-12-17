@@ -132,7 +132,6 @@ class Profileable extends Addressable {
         } else {
             $n[] = $this->owner->ProfileName;
         }
-        var_dump($n);
         return join(' ', $n);
     }
 
