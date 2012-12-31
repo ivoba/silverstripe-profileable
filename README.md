@@ -23,6 +23,11 @@ To render the Profile just call this in your template:
     $getFullProfileHTML  
 This will render the profile in semantic hContact mircroformat markup.
 
+To configure the ProfilePicture Upload set this in your _config.php:
+
+    Profileable::$ProfilePictureAllowedTypes = array('png');
+    Profileable::$ProfilePictureFolder = 'youruploaddir';
+
 You can use all functionality from the addressable module like:  
 **automatic geocoding**  
 

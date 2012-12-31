@@ -12,6 +12,9 @@
  */
 class Profileable extends Addressable {
 
+    public static $ProfilePictureAllowedTypes = array('jpg', 'gif', 'png');
+    public static $ProfilePictureFolder = 'profilepictures';
+
     public function __construct() {
         parent::__construct();
     }
@@ -89,7 +92,11 @@ class Profileable extends Addressable {
         $fields[] = new TextField('Fax', _t('Profileable.FAX', 'Fax'));
         $fields[] = new EmailField('ProfileEmail', _t('Profileable.EMAIL', 'E-Mail'));
         $fields[] = new TextField('Www', _t('Profileable.WWW', 'Homepage'));
-        $fields[] = new UploadField('ProfilePicture', _t('Profileable.PROFILEPICTURE', 'Profile Picture'));
+        $profileUpload = new UploadField('ProfilePicture', _t('Profileable.PROFILEPICTURE', 'Profile Picture'));
+        $profileUpload->allowedExtensions = self::$ProfilePictureAllowedTypes;
+        $profileUpload->setFolderName(self::$ProfilePictureFolder);
+        $profileUpload->setConfig('allowedMaxFileNumber', 1); 
+        $fields[] = $profileUpload;
         $fields[] = new TextareaField('Description', _t('Profileable.DESCRIPTION', 'Description'));
 
         return $fields;
@@ -126,7 +133,7 @@ class Profileable extends Addressable {
             $n[] = $this->owner->AcademicTitle;
         }
         //extends Member?
-        if(isset($this->owner->FirstName) && isset($this->owner->Surname)) {
+        if (isset($this->owner->FirstName) && isset($this->owner->Surname)) {
             $n[] = $this->owner->FirstName;
             $n[] = $this->owner->Surname;
         } else {
