@@ -24,7 +24,7 @@
         <span class="country-name">$getCountryName</span>
         <% end_if %>
     </div>
-    <div class="tel"><% _t('Profileable.Phone','Phone') %>: <span class="value">$Phone</span></div>
-    <div class="tel"><span class="type"><% _t('Profileable.Fax','Fax') %></span>: <span class="value">$Fax</span></div>
+    <% if Phone %><div class="tel"><% _t('Profileable.PHONE','Phone') %>: <span class="value">$Phone</span></div><% end_if %>
+    <% if Fax %><div class="tel"><span class="type"><% _t('Profileable.FAX','Fax') %></span>: <span class="value">$Fax</span></div><% end_if %>
     <a class="url fn org" href="http://$Www">$Www</a> 
 </div>
