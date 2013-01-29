@@ -1,5 +1,5 @@
 {
-    "name": "silverstripe/profileable",
+    "name": "ivoba/silverstripe-profileable",
     "description": "SilverStripe Profileable Module",
     "type": "silverstripe-module",
     "keywords": ["silverstripe"],
@@ -13,6 +13,6 @@
     {
         "silverstripe/framework": "3.*",
 	"silverstripe/cms": "3.*",
-        "silverstripe/addressable": "dev-master"
+        "ajshort/silverstripe-addressable": "dev-master"
     }
 }
