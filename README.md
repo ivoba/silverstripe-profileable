@@ -6,7 +6,7 @@ It inherits all functionality from the addressable module like automatic geocodi
 
 Requirements
 ------------
-*  SilverStripe 2.4+
+*  SilverStripe 3+
 *  Addressable: https://github.com/ajshort/silverstripe-addressable
 
 Quick Usage Overview
