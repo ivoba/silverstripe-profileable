@@ -14,6 +14,7 @@ class Profileable extends Addressable {
 
     public static $ProfilePictureAllowedTypes = array('jpg', 'gif', 'png');
     public static $ProfilePictureFolder = 'profilepictures';
+    public static $ProfilePictureNamePrefix = 'profilepic-';
 
     public function __construct() {
         parent::__construct();
@@ -164,6 +165,15 @@ class Profileable extends Addressable {
         return $data->renderWith('AddressMap     
 
      ');
+    }
+    
+    function onAfterWrite() {
+        parent::onAfterWrite(); 
+        $PP = DataObject::get_one('File','ID = '.$this->owner->ProfilePictureID);
+        if(!empty($PP)){
+            $PP->setName(self::$ProfilePictureNamePrefix.md5($this->owner->ID).'.'.$PP->getExtension()); 
+            $ch = $PP->write(false, false, false, true);
+        }
     }
 
 }
