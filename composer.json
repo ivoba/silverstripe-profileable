@@ -2,7 +2,7 @@
     "name": "ivoba/silverstripe-profileable",
     "description": "SilverStripe Profileable Module",
     "type": "silverstripe-module",
-    "keywords": ["silverstripe"],
+    "keywords": ["silverstripe","profile"],
     "authors": [
     {
         "name": "Ivo Bathke",
