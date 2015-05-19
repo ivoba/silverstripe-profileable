@@ -13,6 +13,6 @@
     {
         "silverstripe/framework": "3.*",
 	"silverstripe/cms": "3.*",
-        "ajshort/silverstripe-addressable": "dev-master"
+        "silverstripe-australia/silverstripe-addressable": "dev-master"
     }
 }
