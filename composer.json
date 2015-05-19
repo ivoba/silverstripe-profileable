@@ -1,18 +1,24 @@
 {
-    "name": "ivoba/silverstripe-profileable",
-    "description": "SilverStripe Profileable Module",
-    "type": "silverstripe-module",
-    "keywords": ["silverstripe","profile"],
-    "authors": [
+  "name": "ivoba/silverstripe-profileable",
+  "description": "SilverStripe Profileable Module",
+  "type": "silverstripe-module",
+  "license": "MIT",
+  "keywords": [
+    "silverstripe",
+    "profile"
+  ],
+  "authors": [
     {
-        "name": "Ivo Bathke",
-        "email": "ivo.bathke@gmail.com"
+      "name": "Ivo Bathke",
+      "email": "ivo.bathke@gmail.com"
     }
-    ],
-    "require":
-    {
-        "silverstripe/framework": "3.*",
-	"silverstripe/cms": "3.*",
-        "silverstripe-australia/silverstripe-addressable": "dev-master"
-    }
+  ],
+  "require": {
+    "silverstripe/framework": "3.*",
+    "silverstripe/cms": "3.*",
+    "silverstripe-australia/silverstripe-addressable": "~1.0"
+  },
+  "extra": {
+    "installer-name": "profileable"
+  }
 }

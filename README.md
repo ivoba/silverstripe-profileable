@@ -7,7 +7,7 @@ It inherits all functionality from the addressable module like automatic geocodi
 Requirements
 ------------
 *  SilverStripe 3+
-*  Addressable: https://github.com/ajshort/silverstripe-addressable
+*  Addressable: https://github.com/silverstripe-australia/silverstripe-addressable
 
 Quick Usage Overview
 --------------------
