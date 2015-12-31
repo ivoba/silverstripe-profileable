@@ -10,13 +10,15 @@
  * @package silverstripe-profileable
  * @package silverstripe-addressable
  */
-class Profileable extends Addressable {
+class Profileable extends Addressable
+{
 
     public static $ProfilePictureAllowedTypes = array('jpg', 'gif', 'png');
     public static $ProfilePictureFolder = 'profilepictures';
     public static $ProfilePictureNamePrefix = 'profilepic-';
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -40,11 +42,12 @@ class Profileable extends Addressable {
         'Country' => 'Varchar(2)',
         'Description' => 'Text'
     );
-    static $has_one = array(
+    public static $has_one = array(
         'ProfilePicture' => 'Image'
     );
 
-    public function updateCMSFields(FieldList $fields) {
+    public function updateCMSFields(FieldList $fields)
+    {
         if ($fields->fieldByName('Root.Content')) {
             $tab = 'Root.Content.' . _t('Profileable.PROFILE ', 'Profile');
         } else {
@@ -54,7 +57,8 @@ class Profileable extends Addressable {
         $fields->addFieldsToTab($tab, $this->getProfileFields());
     }
 
-    protected function getProfileFields() {
+    protected function getProfileFields()
+    {
 
         //TODO gender enum
 
@@ -96,14 +100,15 @@ class Profileable extends Addressable {
         $profileUpload = new UploadField('ProfilePicture', _t('Profileable.PROFILEPICTURE', 'Profile Picture'));
         $profileUpload->allowedExtensions = self::$ProfilePictureAllowedTypes;
         $profileUpload->setFolderName(self::$ProfilePictureFolder);
-        $profileUpload->setConfig('allowedMaxFileNumber', 1); 
+        $profileUpload->setConfig('allowedMaxFileNumber', 1);
         $fields[] = $profileUpload;
         $fields[] = new TextareaField('Description', _t('Profileable.DESCRIPTION', 'Description'));
 
         return $fields;
     }
 
-    public function hasProfile() {
+    public function hasProfile()
+    {
         return (
                 $this->owner->Address
                 && $this->owner->Suburb
@@ -118,7 +123,8 @@ class Profileable extends Addressable {
                 );
     }
 
-    public function getFullName() {
+    public function getFullName()
+    {
         $n = array();
         switch ($this->owner->Gender) {
             case 'm':
@@ -143,20 +149,24 @@ class Profileable extends Addressable {
         return join(' ', $n);
     }
 
-    public function getFullProfile() {
+    public function getFullProfile()
+    {
         return sprintf('%s, %s, %s %s %s, %s, %s, %s', $this->owner->Address, $this->owner->Suburb, $this->owner->State, $this->owner->Postcode, $this->owner->City, $this->getCountryName(), $this->owner->Phone, $this->owner->Email, $this->owner->Www
         );
     }
 
-    public function getFullAddress() {
+    public function getFullAddress()
+    {
         return sprintf('%s, %s %s, %s', $this->owner->Address, $this->owner->Postcode, $this->owner->City, $this->getCountryName());
     }
 
-    public function getFullProfileHTML() {
+    public function getFullProfileHTML()
+    {
         return $this->owner->renderWith('Profile');
     }
 
-    public function ProfileMap($width, $height) {
+    public function ProfileMap($width, $height)
+    {
         $data = $this->owner->customise(array(
             'Width' => $width,
             'Height' => $height,
@@ -167,15 +177,15 @@ class Profileable extends Addressable {
      ');
     }
     
-    function onAfterWrite() {
-        parent::onAfterWrite(); 
-        if(is_numeric($this->owner->ProfilePictureID)){
-            $PP = DataObject::get_one('File','ID = '.$this->owner->ProfilePictureID);
-            if(!empty($PP)){
-                $PP->setName(self::$ProfilePictureNamePrefix.md5($this->owner->ID).'.'.$PP->getExtension()); 
+    public function onAfterWrite()
+    {
+        parent::onAfterWrite();
+        if (is_numeric($this->owner->ProfilePictureID)) {
+            $PP = DataObject::get_one('File', 'ID = '.$this->owner->ProfilePictureID);
+            if (!empty($PP)) {
+                $PP->setName(self::$ProfilePictureNamePrefix.md5($this->owner->ID).'.'.$PP->getExtension());
                 $ch = $PP->write(false, false, false, true);
             }
         }
     }
-
 }
