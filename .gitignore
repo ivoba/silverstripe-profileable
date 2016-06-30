@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+addressable/
+cms/
+composer.lock
+framework/
+reports/
+siteconfig/
+vendor/
