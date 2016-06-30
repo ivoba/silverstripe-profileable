@@ -13,50 +13,75 @@
 class Profileable extends Addressable
 {
 
+    /**
+     * @var array
+     */
     public static $ProfilePictureAllowedTypes = array('jpg', 'gif', 'png');
+    /**
+     * @var string
+     */
     public static $ProfilePictureFolder = 'profilepictures';
+    /**
+     * @var string
+     */
     public static $ProfilePictureNamePrefix = 'profilepic-';
 
+    /**
+     * Profileable constructor.
+     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    public static $db = array(
-        'ProfileName' => 'Varchar(255)',
-        'Gender' => "Enum('m,f,u')",
-        'AcademicTitle' => 'Varchar(20)',
-        'Company' => 'Varchar(255)',
-        'Position' => 'Varchar(255)',
-        'Address' => 'Varchar(255)', //Street
+    /**
+     * @var array
+     */
+    private static $db = array(
+        'ProfileName'     => 'Varchar(255)',
+        'Gender'          => "Enum('m,f,u')",
+        'AcademicTitle'   => 'Varchar(20)',
+        'Company'         => 'Varchar(255)',
+        'Position'        => 'Varchar(255)',
+        'Address'         => 'Varchar(255)', //Street
         'AddressAddition' => 'Varchar(255)',
-        'Suburb' => 'Varchar(64)',
-        'State' => 'Varchar(255)',
-        'Postcode' => 'Varchar(10)',
-        'City' => 'Varchar(255)',
-        'Phone' => 'Varchar(64)',
-        'Fax' => 'Varchar(64)',
+        'Suburb'          => 'Varchar(64)',
+        'State'           => 'Varchar(255)',
+        'Postcode'        => 'Varchar(10)',
+        'City'            => 'Varchar(255)',
+        'Phone'           => 'Varchar(64)',
+        'Fax'             => 'Varchar(64)',
         //so we dont colide with member, if you want to decorate member
-        'ProfileEmail' => 'Varchar(255)',
-        'Www' => 'Varchar(255)',
-        'Country' => 'Varchar(2)',
-        'Description' => 'Text'
-    );
-    public static $has_one = array(
-        'ProfilePicture' => 'Image'
+        'ProfileEmail'    => 'Varchar(255)',
+        'Www'             => 'Varchar(255)',
+        'Country'         => 'Varchar(2)',
+        'Description'     => 'Text',
     );
 
+    /**
+     * @var array
+     */
+    private static $has_one = array(
+        'ProfilePicture' => 'Image',
+    );
+
+    /**
+     * @param FieldList $fields
+     */
     public function updateCMSFields(FieldList $fields)
     {
         if ($fields->fieldByName('Root.Content')) {
-            $tab = 'Root.Content.' . _t('Profileable.PROFILE ', 'Profile');
+            $tab = 'Root.Content.'._t('Profileable.PROFILE ', 'Profile');
         } else {
-            $tab = 'Root.' . _t('Profileable.PROFILE ', 'Profile');
+            $tab = 'Root.'._t('Profileable.PROFILE ', 'Profile');
         }
 
         $fields->addFieldsToTab($tab, $this->getProfileFields());
     }
 
+    /**
+     * @return array
+     */
     protected function getProfileFields()
     {
 
@@ -67,7 +92,16 @@ class Profileable extends Addressable
 
         $fields = array(
             new HeaderField('ProfileHeader', _t('Profileable.PROFILE', 'Profile')),
-            new OptionsetField('Gender', _t('Profileable.GENDER', 'Gender'), array('m' => _t('Profileable.MASCULINE', 'masculine'), 'f' => _t('Profileable.FEMININE', 'feminine'), 'u' => _t('Profileable.UNKNOWN', 'unknown')), 'u'),
+            new OptionsetField(
+                'Gender',
+                _t('Profileable.GENDER', 'Gender'),
+                array(
+                    'm' => _t('Profileable.MASCULINE', 'masculine'),
+                    'f' => _t('Profileable.FEMININE', 'feminine'),
+                    'u' => _t('Profileable.UNKNOWN', 'unknown'),
+                ),
+                'u'
+            ),
             new TextField('AcademicTitle', _t('Profileable.ACADEMICTITLE', 'Name')),
             new TextField('ProfileName', _t('Profileable.NAME', 'Name')),
             new TextField('Company', _t('Profileable.COMPANY', 'Company')),
@@ -76,7 +110,7 @@ class Profileable extends Addressable
             new TextField('AddressAddition', _t('Profileable.ADDRESSADDITION', 'Address Addition')),
             $postcode,
             new TextField('City', _t('Profileable.CITY', 'City')),
-            new TextField('Suburb', _t('Addressable.SUBURB', 'Suburb'))
+            new TextField('Suburb', _t('Addressable.SUBURB', 'Suburb')),
         );
 
         $label = _t('Addressable.STATE', 'State');
@@ -107,22 +141,28 @@ class Profileable extends Addressable
         return $fields;
     }
 
+    /**
+     * @return bool
+     */
     public function hasProfile()
     {
         return (
-                $this->owner->Address
-                && $this->owner->Suburb
-                && $this->owner->State
-                && $this->owner->Postcode
-                && $this->owner->City
-                && $this->owner->Country
-                && $this->owner->Phone
-                && $this->owner->Fax
-                && $this->owner->Email
-                && $this->owner->Www
-                );
+            $this->owner->Address
+            && $this->owner->Suburb
+            && $this->owner->State
+            && $this->owner->Postcode
+            && $this->owner->City
+            && $this->owner->Country
+            && $this->owner->Phone
+            && $this->owner->Fax
+            && $this->owner->Email
+            && $this->owner->Www
+        );
     }
 
+    /**
+     * @return string
+     */
     public function getFullName()
     {
         $n = array();
@@ -146,45 +186,80 @@ class Profileable extends Addressable
         } else {
             $n[] = $this->owner->ProfileName;
         }
+
         return join(' ', $n);
     }
 
+    /**
+     * @return string
+     */
     public function getFullProfile()
     {
-        return sprintf('%s, %s, %s %s %s, %s, %s, %s', $this->owner->Address, $this->owner->Suburb, $this->owner->State, $this->owner->Postcode, $this->owner->City, $this->getCountryName(), $this->owner->Phone, $this->owner->Email, $this->owner->Www
+        return sprintf(
+            '%s, %s, %s %s %s, %s, %s, %s',
+            $this->owner->Address,
+            $this->owner->Suburb,
+            $this->owner->State,
+            $this->owner->Postcode,
+            $this->owner->City,
+            $this->getCountryName(),
+            $this->owner->Phone,
+            $this->owner->Email,
+            $this->owner->Www
         );
     }
 
+    /**
+     * @return string
+     */
     public function getFullAddress()
     {
-        return sprintf('%s, %s %s, %s', $this->owner->Address, $this->owner->Postcode, $this->owner->City, $this->getCountryName());
+        return sprintf(
+            '%s, %s %s, %s',
+            $this->owner->Address,
+            $this->owner->Postcode,
+            $this->owner->City,
+            $this->getCountryName()
+        );
     }
 
+    /**
+     * @return string
+     */
     public function getFullProfileHTML()
     {
         return $this->owner->renderWith('Profile');
     }
 
+    /**
+     * @param $width
+     * @param $height
+     * @return string
+     */
     public function ProfileMap($width, $height)
     {
-        $data = $this->owner->customise(array(
-            'Width' => $width,
-            'Height' => $height,
-            'Address' => rawurlencode($this->getFullAddress())
-                ));
-        return $data->renderWith('AddressMap     
+        $data = $this->owner->customise(
+            array(
+                'Width'   => $width,
+                'Height'  => $height,
+                'Address' => rawurlencode($this->getFullAddress()),
+            )
+        );
 
-     ');
+        return $data->renderWith('AddressMap');
     }
-    
+
+    /**
+     *
+     */
     public function onAfterWrite()
     {
         parent::onAfterWrite();
         if (is_numeric($this->owner->ProfilePictureID)) {
-            $PP = DataObject::get_one('File', 'ID = '.$this->owner->ProfilePictureID);
-            if (!empty($PP)) {
-                $PP->setName(self::$ProfilePictureNamePrefix.md5($this->owner->ID).'.'.$PP->getExtension());
-                $ch = $PP->write(false, false, false, true);
+            $profilePicture = File::get_one('File', 'ID = '.$this->owner->ProfilePictureID);
+            if (!empty($profilePicture)) {
+                $profilePicture->setName(self::$ProfilePictureNamePrefix.md5($this->owner->ID).'.'.$profilePicture->getExtension());
+                $profilePicture->write(false, false, false, true);
             }
         }
     }
