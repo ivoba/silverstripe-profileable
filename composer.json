@@ -16,7 +16,7 @@
     "require": {
         "silverstripe/framework": "3.*",
         "silverstripe/cms": "3.*",
-        "silverstripe-australia/silverstripe-addressable": "^1.1"
+        "silverstripe-australia/addressable": "^1.1"
     },
     "extra": {
         "installer-name": "profileable"
